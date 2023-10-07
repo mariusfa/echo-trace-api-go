@@ -1,6 +1,10 @@
 package main
 
+import (
+	"echo/rest"
+)
+
 
 func main() {
-	println("Hello World")
+	rest.SetupRouter().Run()
 }

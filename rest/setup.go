@@ -1,4 +1,4 @@
-package routes
+package rest
 
 import (
 	"github.com/gin-gonic/gin"
@@ -7,9 +7,7 @@ import (
 func SetupRouter() *gin.Engine {
 	r := gin.Default()
 	r.GET("/", func(c *gin.Context) {
-		c.JSON(200, gin.H{
-			"message": "Hello World",
-		})
+		c.String(200, "Hello World")
 	})
 	return r
 }
