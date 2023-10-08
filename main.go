@@ -4,7 +4,7 @@ import (
 	"echo/rest"
 )
 
-
 func main() {
-	rest.SetupRouter().Run()
+	healthController := &rest.HealthController{}
+	rest.SetupRouter(healthController).Run()
 }
