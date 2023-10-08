@@ -6,6 +6,6 @@ import (
 
 func SetupRouter(healthController *HealthController) *gin.Engine {
 	r := gin.Default()
-	r.GET("/health",healthController.HealthCheck)
+	r.GET("/health", healthController.HealthCheck)
 	return r
 }

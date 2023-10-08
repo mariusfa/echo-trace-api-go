@@ -8,10 +8,10 @@ import (
 
 func TestHealth(t *testing.T) {
 	healthController := &HealthController{}
-	router:= SetupRouter(healthController)
+	router := SetupRouter(healthController)
 
 	// Create a request to send to the above route
-	request:= httptest.NewRequest("GET", "/health", nil)
+	request := httptest.NewRequest("GET", "/health", nil)
 	// Create a response recorder to record the response from the server
 	response := httptest.NewRecorder()
 	// Perform the request
