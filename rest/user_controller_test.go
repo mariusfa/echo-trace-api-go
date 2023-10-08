@@ -6,10 +6,12 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"testing"
+	"echo/biz"
 )
 
 func TestRegister(t *testing.T) {
-	userController := &UserController{}
+	userService := &biz.UserService{}
+	userController := &UserController{UserService: userService}
 	healthController := &HealthController{}
 	router := SetupRouter(healthController, userController)
 
