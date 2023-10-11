@@ -71,7 +71,7 @@ func TestRegisterConfictUsername(t *testing.T) {
 	// Perform the request
 	router.ServeHTTP(response, request)
 
-	if response.Code != http.StatusBadRequest {
+	if response.Code != http.StatusConflict {
 		t.Errorf("Response code is %v", response.Code)
 	}
 }
