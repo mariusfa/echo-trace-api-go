@@ -10,10 +10,11 @@ import (
 )
 
 func TestRegister(t *testing.T) {
-	userService := &biz.UserService{}
-	userController := &UserController{UserService: userService}
+	userRepoFake := &biz.UserRepositoryFake{}
+	userService := biz.UserService{UserRepository: userRepoFake}
+	userController := UserController{UserService: userService}
 	healthController := &HealthController{}
-	router := SetupRouter(healthController, userController)
+	router := SetupRouter(healthController, &userController)
 
 	// Create a request to send to the above route
 	loginData := map[string]string{"username": "testuser", "password": "testpass"}
@@ -30,4 +31,18 @@ func TestRegister(t *testing.T) {
 	if response.Code != http.StatusOK {
 		t.Errorf("Response code is %v", response.Code)
 	}
+
+	if (len(userRepoFake.Users) != 1) {
+		t.Errorf("User is not inserted")
+	}
+	if (userRepoFake.Users[0].Name != "testuser") {
+		t.Errorf("User is not inserted")
+	}
+	// if (userRepoFake.Users[0].HashedPassword == "testpass") {
+	// 	t.Errorf("Password is not hashed")
+	// }
+	// if (userRepoFake.Users[0].ApiToken == "") {
+	// 	t.Errorf("ApiToken is not generated")
+	// }
+
 }

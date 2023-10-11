@@ -7,7 +7,7 @@ import (
 )
 
 type UserController struct {
-	UserService *biz.UserService
+	UserService biz.UserService
 }
 
 func (uc *UserController) Register(c *gin.Context) {
