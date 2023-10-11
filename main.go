@@ -1,8 +1,8 @@
 package main
 
 import (
-	"echo/rest"
 	"echo/biz"
+	"echo/rest"
 )
 
 func main() {
@@ -13,4 +13,3 @@ func main() {
 	userController := rest.UserController{UserService: userService}
 	rest.SetupRouter(&healthController, &userController).Run()
 }
-

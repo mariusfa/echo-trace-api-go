@@ -1,9 +1,9 @@
 package rest
 
 import (
-	"github.com/gin-gonic/gin"
 	"echo/biz"
 	"echo/rest/dto"
+	"github.com/gin-gonic/gin"
 )
 
 type UserController struct {

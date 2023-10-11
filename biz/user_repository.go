@@ -5,14 +5,13 @@ import (
 )
 
 type User struct {
-	Id int64
-	Name string
+	Id             int64
+	Name           string
 	HashedPassword string
-	ApiToken string
+	ApiToken       string
 }
 
 type UserRepositoryContract interface {
 	Insert(user domain.User) error
 	GetByName(name string) (domain.User, error)
 }
-

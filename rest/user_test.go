@@ -2,12 +2,12 @@ package rest
 
 import (
 	"bytes"
+	"echo/biz"
+	"echo/biz/domain"
 	"encoding/json"
 	"net/http"
 	"net/http/httptest"
 	"testing"
-	"echo/biz"
-	"echo/biz/domain"
 )
 
 func TestRegister(t *testing.T) {
@@ -33,16 +33,16 @@ func TestRegister(t *testing.T) {
 		t.Errorf("Response code is %v", response.Code)
 	}
 
-	if (len(userRepoFake.Users) != 1) {
+	if len(userRepoFake.Users) != 1 {
 		t.Errorf("User is not inserted")
 	}
-	if (userRepoFake.Users[0].Name != "testuser") {
+	if userRepoFake.Users[0].Name != "testuser" {
 		t.Errorf("User is not inserted")
 	}
-	if (userRepoFake.Users[0].HashedPassword == "testpass") {
+	if userRepoFake.Users[0].HashedPassword == "testpass" {
 		t.Errorf("Password is not hashed")
 	}
-	if (userRepoFake.Users[0].ApiToken == "") {
+	if userRepoFake.Users[0].ApiToken == "" {
 		t.Errorf("ApiToken is not generated")
 	}
 }
