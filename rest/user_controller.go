@@ -15,7 +15,7 @@ type UserController struct {
 func (uc *UserController) Register(c *gin.Context) {
 	var userRequestDTO dto.UserRequestDTO
 	if err := c.ShouldBindJSON(&userRequestDTO); err != nil {
-		c.JSON(400, gin.H{"error": err.Error()})
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 	err := uc.UserService.Register(userRequestDTO.ToDomain())
