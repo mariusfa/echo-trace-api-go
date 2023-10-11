@@ -6,10 +6,11 @@ import (
 )
 
 func main() {
-	healthController := &rest.HealthController{}
+	healthController := rest.HealthController{}
 
-	userService := &biz.UserService{}
-	userController := &rest.UserController{UserService: userService}
-	rest.SetupRouter(healthController, userController).Run()
+	userRepository := &biz.UserRepositoryFake{}
+	userService := biz.UserService{UserRepository: userRepository}
+	userController := rest.UserController{UserService: userService}
+	rest.SetupRouter(&healthController, &userController).Run()
 }
 

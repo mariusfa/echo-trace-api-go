@@ -38,11 +38,11 @@ func TestRegister(t *testing.T) {
 	if (userRepoFake.Users[0].Name != "testuser") {
 		t.Errorf("User is not inserted")
 	}
-	// if (userRepoFake.Users[0].HashedPassword == "testpass") {
-	// 	t.Errorf("Password is not hashed")
-	// }
-	// if (userRepoFake.Users[0].ApiToken == "") {
-	// 	t.Errorf("ApiToken is not generated")
-	// }
+	if (userRepoFake.Users[0].HashedPassword == "testpass") {
+		t.Errorf("Password is not hashed")
+	}
+	if (userRepoFake.Users[0].ApiToken == "") {
+		t.Errorf("ApiToken is not generated")
+	}
 
 }
