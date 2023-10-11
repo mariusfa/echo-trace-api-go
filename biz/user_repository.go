@@ -13,5 +13,6 @@ type User struct {
 
 type UserRepositoryContract interface {
 	Insert(user domain.User) error
+	GetByName(name string) (domain.User, error)
 }
 

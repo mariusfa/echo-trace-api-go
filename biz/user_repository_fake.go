@@ -12,3 +12,12 @@ func (ur *UserRepositoryFake) Insert(user domain.User) error {
 	ur.Users = append(ur.Users, user)
 	return nil
 }
+
+func (ur *UserRepositoryFake) GetByName(name string) (domain.User, error) {
+	for _, user := range ur.Users {
+		if user.Name == name {
+			return user, nil
+		}
+	}
+	return domain.User{}, nil
+}

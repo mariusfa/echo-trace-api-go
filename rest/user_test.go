@@ -7,6 +7,7 @@ import (
 	"net/http/httptest"
 	"testing"
 	"echo/biz"
+	"echo/biz/domain"
 )
 
 func TestRegister(t *testing.T) {
@@ -44,5 +45,33 @@ func TestRegister(t *testing.T) {
 	if (userRepoFake.Users[0].ApiToken == "") {
 		t.Errorf("ApiToken is not generated")
 	}
+}
 
+func TestRegisterConfictUsername(t *testing.T) {
+	user := domain.User{
+		Name:           "testuser",
+		HashedPassword: "testpass",
+	}
+	userRepoFake := &biz.UserRepositoryFake{}
+	userRepoFake.Users = append(userRepoFake.Users, user)
+	userService := biz.UserService{UserRepository: userRepoFake}
+	userController := UserController{UserService: userService}
+	healthController := &HealthController{}
+	router := SetupRouter(healthController, &userController)
+
+	// Create a request to send to the above route
+	loginData := map[string]string{"username": "testuser", "password": "testpass"}
+	loginJSON, _ := json.Marshal(loginData)
+	request := httptest.NewRequest("POST", "/user/register", bytes.NewBuffer(loginJSON))
+	request.Header.Set("Content-Type", "application/json")
+
+	// Create a response recorder to record the response from the server
+	response := httptest.NewRecorder()
+
+	// Perform the request
+	router.ServeHTTP(response, request)
+
+	if response.Code != http.StatusBadRequest {
+		t.Errorf("Response code is %v", response.Code)
+	}
 }
