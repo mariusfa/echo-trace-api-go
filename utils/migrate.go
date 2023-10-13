@@ -29,7 +29,7 @@ func MigrateBase() {
 	if err != nil {
 		panic(err)
 	}
-	if err := m.Up(); err != nil {
+	if err := m.Up(); err != nil && err != migrate.ErrNoChange {
 		panic(err)
 	}
 }

@@ -3,9 +3,14 @@ package main
 import (
 	"echo/biz"
 	"echo/rest"
+	"echo/utils"
 )
 
 func main() {
+	if (utils.GetEnv("APP_ENV", "prod") == "dev") {
+		utils.MigrateBase()
+	}
+
 	healthController := rest.HealthController{}
 
 	userRepository := &biz.UserRepositoryFake{}
