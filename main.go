@@ -1,10 +1,15 @@
 package main
 
 import (
+	"echo/biz"
 	"echo/rest"
 )
 
-
 func main() {
-	rest.SetupRouter().Run()
+	healthController := rest.HealthController{}
+
+	userRepository := &biz.UserRepositoryFake{}
+	userService := biz.UserService{UserRepository: userRepository}
+	userController := rest.UserController{UserService: userService}
+	rest.SetupRouter(&healthController, &userController).Run()
 }

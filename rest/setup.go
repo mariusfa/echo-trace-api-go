@@ -4,10 +4,10 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func SetupRouter() *gin.Engine {
+func SetupRouter(healthController *HealthController, userController *UserController) *gin.Engine {
 	r := gin.Default()
-	r.GET("/", func(c *gin.Context) {
-		c.String(200, "Hello World")
-	})
+	r.GET("/health", healthController.HealthCheck)
+
+	r.POST("/user/register", userController.Register)
 	return r
 }
