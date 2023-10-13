@@ -15,15 +15,25 @@ const (
 	defaultMigrationDBName   = "postgres"
 )
 
+type DbConfig struct {
+	Host     string
+	Port     int
+	User     string
+	Password string
+	DbName   string
+}
+
 func MigrateBase() {
-	host := GetEnv("DB_HOST", defaultMigrationHost)
-	port := GetEnvAsInt("DB_PORT", defaultMigrationPort)
-	user := GetEnv("DB_USER", defaultMigrationUser)
-	password := GetEnv("DB_PASSWORD", defaultMigrationPassword)
-	dbname := GetEnv("DB_NAME", defaultMigrationDBName)
+	config := DbConfig{
+		Host:     GetEnv("DB_HOST", defaultMigrationHost),
+		Port:     GetEnvAsInt("DB_PORT", defaultMigrationPort),
+		User:     GetEnv("DB_USER", defaultMigrationUser),
+		Password: GetEnv("DB_PASSWORD", defaultMigrationPassword),
+		DbName:   GetEnv("DB_NAME", defaultMigrationDBName),
+	}
 
 	connectionString := fmt.Sprintf("postgres://%s:%s@%s:%d/%s?sslmode=disable",
-		user, password, host, port, dbname)
+		config.User, config.Password, config.Host, config.Port, config.DbName)
 
 	m, err := migrate.New("file://migrations/base", connectionString)
 	if err != nil {
