@@ -14,12 +14,22 @@ import (
 	"echo/biz/domain"
 )
 
-var db *sql.DB
-
 func TestMain(m *testing.M) {
 	ctx := context.Background()
+	testContainer , err := createTestContainer(ctx)
+	if err != nil {
+		log.Fatalf("Failed to start container: %v", err)
+	}
+	defer testContainer.Terminate(ctx)
 
-	// Create a PostgreSQL container
+	// Run the tests
+	code := m.Run()
+
+	// Exit with the test code
+	os.Exit(code)
+}
+
+func createTestContainer(ctx context.Context) (testcontainers.Container, error) {
 	req := testcontainers.ContainerRequest{
 		Image:        "postgres:13-alpine",
 		ExposedPorts: []string{"5432/tcp"},
@@ -35,34 +45,12 @@ func TestMain(m *testing.M) {
 		Started:          true,
 	})
 	if err != nil {
-		log.Fatalf("Failed to start container: %v", err)
-	}
-	defer container.Terminate(ctx)
-
-	// Get the container's IP address and port
-	ip, err := container.Host(ctx)
-	if err != nil {
-		log.Fatalf("Failed to get container IP: %v", err)
-	}
-	port, err := container.MappedPort(ctx, "5432/tcp")
-	if err != nil {
-		log.Fatalf("Failed to get container port: %v", err)
+		return nil, err
 	}
 
-	// Connect to the database
-	dsn := fmt.Sprintf("postgres://test:test@%s:%s/test?sslmode=disable", ip, port.Port())
-	db, err = sql.Open("postgres", dsn)
-	if err != nil {
-		log.Fatalf("Failed to connect to database: %v", err)
-	}
-	defer db.Close()
-
-	// Run the tests
-	code := m.Run()
-
-	// Exit with the test code
-	os.Exit(code)
+	return container, nil
 }
+
 
 func TestUserRepository_Insert(t *testing.T) {
 	repo := biz.NewUserRepository(db)
