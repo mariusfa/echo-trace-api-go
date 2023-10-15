@@ -6,6 +6,7 @@ import (
 )
 
 func TestMigration(t *testing.T) {
+	// Given
 	ctx := context.Background()
 	testContainer, err := CreateTestContainer(ctx)
 	if err != nil {
@@ -16,7 +17,11 @@ func TestMigration(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Failed to get test container db config: %v", err)
 	}
+
+	// When
 	err = MigrateBase(migrationDbConfig, "../migrations")
+
+	// Then
 	if err != nil {
 		t.Fatalf("Failed to migrate: %v", err)
 	}
