@@ -8,22 +8,6 @@ import (
 	_ "github.com/golang-migrate/migrate/v4/source/file"
 )
 
-const (
-	defaultMigrationHost     = "localhost"
-	defaultMigrationPort     = 5432
-	defaultMigrationUser     = "postgres"
-	defaultMigrationPassword = "password"
-	defaultMigrationDBName   = "postgres"
-)
-
-type DbConfig struct {
-	Host     string
-	Port     int
-	User     string
-	Password string
-	DbName   string
-}
-
 func Migrate(dbConfig DbConfig) {
 	if GetEnv("APP_ENV", "prod") == "dev" {
 		MigrateBase(dbConfig)
@@ -40,15 +24,5 @@ func MigrateBase(config DbConfig) {
 	}
 	if err := m.Up(); err != nil && err != migrate.ErrNoChange {
 		panic(err)
-	}
-}
-
-func GetMigrationDbConfig() DbConfig {
-	return DbConfig{
-		Host:     GetEnv("DB_HOST", defaultMigrationHost),
-		Port:     GetEnvAsInt("DB_PORT", defaultMigrationPort),
-		User:     GetEnv("DB_USER", defaultMigrationUser),
-		Password: GetEnv("DB_PASSWORD", defaultMigrationPassword),
-		DbName:   GetEnv("DB_NAME", defaultMigrationDBName),
 	}
 }

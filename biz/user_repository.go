@@ -17,7 +17,6 @@ type UserRepositoryContract interface {
 	GetByName(name string) (domain.User, error)
 }
 
-
 type UserRepository struct {
 	db *sql.DB
 }
@@ -47,4 +46,3 @@ func (r *UserRepository) GetByName(name string) (domain.User, error) {
 
 	return user, nil
 }
-

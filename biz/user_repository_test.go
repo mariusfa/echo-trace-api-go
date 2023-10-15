@@ -8,15 +8,15 @@ import (
 	"os"
 	"testing"
 
-	"github.com/testcontainers/testcontainers-go"
-	"github.com/testcontainers/testcontainers-go/wait"
 	"echo/biz"
 	"echo/biz/domain"
+	"github.com/testcontainers/testcontainers-go"
+	"github.com/testcontainers/testcontainers-go/wait"
 )
 
 func TestMain(m *testing.M) {
 	ctx := context.Background()
-	testContainer , err := createTestContainer(ctx)
+	testContainer, err := createTestContainer(ctx)
 	if err != nil {
 		log.Fatalf("Failed to start container: %v", err)
 	}
@@ -50,7 +50,6 @@ func createTestContainer(ctx context.Context) (testcontainers.Container, error) 
 
 	return container, nil
 }
-
 
 func TestUserRepository_Insert(t *testing.T) {
 	repo := biz.NewUserRepository(db)

@@ -17,4 +17,3 @@ func main() {
 	userController := rest.UserController{UserService: userService}
 	rest.SetupRouter(&healthController, &userController).Run()
 }
-
