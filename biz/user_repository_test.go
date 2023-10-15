@@ -2,8 +2,6 @@ package biz_test
 
 import (
 	"context"
-	"database/sql"
-	"fmt"
 	"log"
 	"os"
 	"testing"
@@ -11,51 +9,38 @@ import (
 	"echo/biz"
 	"echo/biz/domain"
 	"echo/utils"
-
-	"github.com/testcontainers/testcontainers-go"
-	"github.com/testcontainers/testcontainers-go/wait"
 )
 
+var userDbConfig utils.DbConfig
+
 func TestMain(m *testing.M) {
+	// Create the test container
 	ctx := context.Background()
-	testContainer, err := createTestContainer(ctx)
+	testContainer, err := utils.CreateTestContainer(ctx)
 	if err != nil {
 		log.Fatalf("Failed to start container: %v", err)
 	}
 	defer testContainer.Terminate(ctx)
-	migrationDbConfig, err := utils.GetTestContainerMigrationDbConfig(testContainer, ctx, "test", "test", "test")
+
+	// Get the migration db config
+	migrationDbConfig, err := utils.GetTestContainerMigrationDbConfig(testContainer, ctx)
 	if err != nil {
 		log.Fatalf("Failed to get test container db config: %v", err)
 	}
-	utils.Migrate(migrationDbConfig)
+	// Do db migrations
+	err = utils.MigrateBase(migrationDbConfig, "../migrations")
+
+	// Get the app db config
+	userDbConfig, err = utils.GetTestContainerAppDbConfig(testContainer, ctx)
+	if err != nil {
+		log.Fatalf("Failed to get test container app db config: %v", err)
+	}
 
 	// Run the tests
 	code := m.Run()
 
 	// Exit with the test code
 	os.Exit(code)
-}
-
-func createTestContainer(ctx context.Context) (testcontainers.Container, error) {
-	req := testcontainers.ContainerRequest{
-		Image:        "postgres:13-alpine",
-		ExposedPorts: []string{"5432/tcp"},
-		Env: map[string]string{
-			"POSTGRES_USER":     "test",
-			"POSTGRES_PASSWORD": "test",
-			"POSTGRES_DB":       "test",
-		},
-		WaitingFor: wait.ForLog("database system is ready to accept connections"),
-	}
-	container, err := testcontainers.GenericContainer(ctx, testcontainers.GenericContainerRequest{
-		ContainerRequest: req,
-		Started:          true,
-	})
-	if err != nil {
-		return nil, err
-	}
-
-	return container, nil
 }
 
 func TestUserRepository_Insert(t *testing.T) {

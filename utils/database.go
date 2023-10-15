@@ -7,12 +7,11 @@ import (
 )
 
 type DbConfig struct {
-	Host            string
-	Port            int
-	User            string
-	Password        string
-	DbName          string
-	migrationFolder string
+	Host     string
+	Port     int
+	User     string
+	Password string
+	DbName   string
 }
 
 func GetMigrationDbConfig() DbConfig {
@@ -32,17 +31,7 @@ func GetMigrationDbConfig() DbConfig {
 	}
 }
 
-func GetCustomMigrationDbConfig(host string, port int, user string, password string, dbName string) DbConfig {
-	return DbConfig{
-		Host:     host,
-		Port:     port,
-		User:     user,
-		Password: password,
-		DbName:   dbName,
-	}
-}
-
-func GetTestContainerMigrationDbConfig(container testcontainers.Container, ctx context.Context, user string, password string, dbName string) (DbConfig, error) {
+func GetTestContainerMigrationDbConfig(container testcontainers.Container, ctx context.Context) (DbConfig, error) {
 	host, err := container.Host(ctx)
 	if err != nil {
 		return DbConfig{}, err
@@ -54,8 +43,26 @@ func GetTestContainerMigrationDbConfig(container testcontainers.Container, ctx c
 	return DbConfig{
 		Host:     host,
 		Port:     port.Int(),
-		User:     user,
-		Password: password,
-		DbName:   dbName,
+		User:     "test",
+		Password: "test",
+		DbName:   "test",
+	}, nil
+}
+
+func GetTestContainerAppDbConfig(container testcontainers.Container, ctx context.Context) (DbConfig, error) {
+	host, err := container.Host(ctx)
+	if err != nil {
+		return DbConfig{}, err
+	}
+	port, err := container.MappedPort(ctx, "5432")
+	if err != nil {
+		return DbConfig{}, err
+	}
+	return DbConfig{
+		Host:     host,
+		Port:     port.Int(),
+		User:     "appuser",
+		Password: "password",
+		DbName:   "test",
 	}, nil
 }

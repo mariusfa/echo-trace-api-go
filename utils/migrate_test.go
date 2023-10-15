@@ -13,7 +13,7 @@ func TestMigration(t *testing.T) {
 		t.Fatalf("Failed to start container: %v", err)
 	}
 	defer testContainer.Terminate(ctx)
-	migrationDbConfig, err := GetTestContainerMigrationDbConfig(testContainer, ctx, "test", "test", "test")
+	migrationDbConfig, err := GetTestContainerMigrationDbConfig(testContainer, ctx)
 	if err != nil {
 		t.Fatalf("Failed to get test container db config: %v", err)
 	}
