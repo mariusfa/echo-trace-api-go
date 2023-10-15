@@ -2,6 +2,8 @@ package utils
 
 import (
 	"context"
+	"database/sql"
+	"fmt"
 
 	"github.com/testcontainers/testcontainers-go"
 )
@@ -65,4 +67,15 @@ func GetTestContainerAppDbConfig(container testcontainers.Container, ctx context
 		Password: "password",
 		DbName:   "test",
 	}, nil
+}
+
+func SetupAppDb(appDbConfig DbConfig) (*sql.DB, error) {
+	psqlInfo := fmt.Sprintf("host=%s port=%d user=%s "+
+		"password=%s dbname=%s sslmode=disable",
+		appDbConfig.Host, appDbConfig.Port, appDbConfig.User, appDbConfig.Password, appDbConfig.DbName)
+	db, err := sql.Open("postgres", psqlInfo)
+	if err != nil {
+		return nil, err
+	}
+	return db, nil
 }
