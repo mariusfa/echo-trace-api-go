@@ -8,7 +8,10 @@ import (
 
 func main() {
 	migrationDbConfig := utils.GetMigrationDbConfig()
-	utils.Migrate(migrationDbConfig)
+	err := utils.Migrate(migrationDbConfig)
+	if err != nil {
+		panic(err)
+	}
 
 	healthController := rest.HealthController{}
 

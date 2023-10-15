@@ -10,6 +10,8 @@ import (
 
 	"echo/biz"
 	"echo/biz/domain"
+	"echo/utils"
+
 	"github.com/testcontainers/testcontainers-go"
 	"github.com/testcontainers/testcontainers-go/wait"
 )
@@ -21,6 +23,12 @@ func TestMain(m *testing.M) {
 		log.Fatalf("Failed to start container: %v", err)
 	}
 	defer testContainer.Terminate(ctx)
+	migrationDbConfig, err := utils.GetTestContainerMigrationDbConfig(testContainer, ctx, "test", "test", "test")
+	if err != nil {
+		log.Fatalf("Failed to get test container db config: %v", err)
+	}
+	utils.Migrate(migrationDbConfig)
+	
 
 	// Run the tests
 	code := m.Run()
