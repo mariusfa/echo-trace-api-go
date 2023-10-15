@@ -2,6 +2,7 @@ package utils
 
 import (
 	"fmt"
+
 	"github.com/golang-migrate/migrate/v4"
 	_ "github.com/golang-migrate/migrate/v4/database/postgres"
 	_ "github.com/golang-migrate/migrate/v4/source/file"
@@ -23,15 +24,13 @@ type DbConfig struct {
 	DbName   string
 }
 
-func MigrateBase() {
-	config := DbConfig{
-		Host:     GetEnv("DB_HOST", defaultMigrationHost),
-		Port:     GetEnvAsInt("DB_PORT", defaultMigrationPort),
-		User:     GetEnv("DB_USER", defaultMigrationUser),
-		Password: GetEnv("DB_PASSWORD", defaultMigrationPassword),
-		DbName:   GetEnv("DB_NAME", defaultMigrationDBName),
+func Migrate(dbConfig DbConfig) {
+	if GetEnv("APP_ENV", "prod") == "dev" {
+		MigrateBase(dbConfig)
 	}
+}
 
+func MigrateBase(config DbConfig) {
 	connectionString := fmt.Sprintf("postgres://%s:%s@%s:%d/%s?sslmode=disable",
 		config.User, config.Password, config.Host, config.Port, config.DbName)
 
@@ -41,5 +40,15 @@ func MigrateBase() {
 	}
 	if err := m.Up(); err != nil && err != migrate.ErrNoChange {
 		panic(err)
+	}
+}
+
+func GetMigrationDbConfig() DbConfig {
+	return DbConfig{
+		Host:     GetEnv("DB_HOST", defaultMigrationHost),
+		Port:     GetEnvAsInt("DB_PORT", defaultMigrationPort),
+		User:     GetEnv("DB_USER", defaultMigrationUser),
+		Password: GetEnv("DB_PASSWORD", defaultMigrationPassword),
+		DbName:   GetEnv("DB_NAME", defaultMigrationDBName),
 	}
 }

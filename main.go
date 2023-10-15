@@ -7,9 +7,8 @@ import (
 )
 
 func main() {
-	if (utils.GetEnv("APP_ENV", "prod") == "dev") {
-		utils.MigrateBase()
-	}
+	migrationDbConfig := utils.GetMigrationDbConfig()
+	utils.Migrate(migrationDbConfig)
 
 	healthController := rest.HealthController{}
 
@@ -18,3 +17,4 @@ func main() {
 	userController := rest.UserController{UserService: userService}
 	rest.SetupRouter(&healthController, &userController).Run()
 }
+
