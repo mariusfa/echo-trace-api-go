@@ -29,6 +29,9 @@ func TestMain(m *testing.M) {
 	}
 	// Do db migrations
 	err = utils.MigrateBase(migrationDbConfig, "../migrations")
+	if err != nil {
+		log.Fatalf("Failed to migrate: %v", err)
+	}
 
 	// Get the app db config
 	userDbConfig, err = utils.GetTestContainerAppDbConfig(testContainer, ctx)
