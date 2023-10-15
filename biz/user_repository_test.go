@@ -28,7 +28,6 @@ func TestMain(m *testing.M) {
 		log.Fatalf("Failed to get test container db config: %v", err)
 	}
 	utils.Migrate(migrationDbConfig)
-	
 
 	// Run the tests
 	code := m.Run()

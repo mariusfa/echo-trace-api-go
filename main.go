@@ -8,7 +8,7 @@ import (
 
 func main() {
 	migrationDbConfig := utils.GetMigrationDbConfig()
-	err := utils.Migrate(migrationDbConfig)
+	err := utils.Migrate(migrationDbConfig, "./migrations")
 	if err != nil {
 		panic(err)
 	}

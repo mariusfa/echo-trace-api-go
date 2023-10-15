@@ -8,18 +8,19 @@ import (
 	_ "github.com/golang-migrate/migrate/v4/source/file"
 )
 
-func Migrate(dbConfig DbConfig) error {
+func Migrate(dbConfig DbConfig, path string) error {
 	if GetEnv("APP_ENV", "prod") == "dev" {
-		return MigrateBase(dbConfig)
+		return MigrateBase(dbConfig, path)
 	}
 	return nil
 }
 
-func MigrateBase(config DbConfig) error {
+func MigrateBase(config DbConfig, path string) error {
 	connectionString := fmt.Sprintf("postgres://%s:%s@%s:%d/%s?sslmode=disable",
 		config.User, config.Password, config.Host, config.Port, config.DbName)
 
-	m, err := migrate.New("file://../migrations/base", connectionString)
+	basePath := fmt.Sprintf("file://%s/base", path)
+	m, err := migrate.New(basePath, connectionString)
 	if err != nil {
 		return err
 	}

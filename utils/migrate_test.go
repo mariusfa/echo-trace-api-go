@@ -16,7 +16,7 @@ func TestMigration(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Failed to get test container db config: %v", err)
 	}
-	err = MigrateBase(migrationDbConfig)
+	err = MigrateBase(migrationDbConfig, "../migrations")
 	if err != nil {
 		t.Fatalf("Failed to migrate: %v", err)
 	}

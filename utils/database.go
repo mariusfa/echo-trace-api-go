@@ -7,11 +7,12 @@ import (
 )
 
 type DbConfig struct {
-	Host     string
-	Port     int
-	User     string
-	Password string
-	DbName   string
+	Host            string
+	Port            int
+	User            string
+	Password        string
+	DbName          string
+	migrationFolder string
 }
 
 func GetMigrationDbConfig() DbConfig {
