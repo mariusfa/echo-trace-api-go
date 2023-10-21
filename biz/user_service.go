@@ -60,5 +60,7 @@ func (us *UserService) Login(userRequest domain.UserRequest) error {
 		return errors.New("invalid credentials")
 	}
 
+	// TODO: return token
+
 	return nil
 }
