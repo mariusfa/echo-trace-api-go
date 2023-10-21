@@ -30,3 +30,22 @@ func (uc *UserController) Register(c *gin.Context) {
 		return
 	}
 }
+
+func (uc *UserController) Login(c *gin.Context) {
+	var userRequestDTO dto.UserRequestDTO
+	if err := c.ShouldBindJSON(&userRequestDTO); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	err := uc.UserService.Login(userRequestDTO.ToDomain())
+
+	if err != nil && err.Error() == "Invalid credentials" {
+		c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
+		return
+	}
+
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Internal server error"})
+		return
+	}
+}

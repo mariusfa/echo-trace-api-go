@@ -48,3 +48,17 @@ func generateApiToken() string {
 	}
 	return string(b)
 }
+
+func (us *UserService) Login(userRequest domain.UserRequest) error {
+	user, err := us.UserRepository.GetByName(userRequest.Username)
+	if err != nil {
+		return errors.New("invalid credentials")
+	}
+
+	err = bcrypt.CompareHashAndPassword([]byte(user.HashedPassword), []byte(userRequest.Password))
+	if err != nil {
+		return errors.New("invalid credentials")
+	}
+
+	return nil
+}
