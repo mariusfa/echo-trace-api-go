@@ -13,11 +13,8 @@ type UserService struct {
 }
 
 func (us *UserService) Register(userRequest domain.UserRequest) error {
-	existingUser, err := us.UserRepository.GetByName(userRequest.Username)
-	if err != nil {
-		return err
-	}
-	if existingUser != (domain.User{}) {
+	_, err := us.UserRepository.GetByName(userRequest.Username)
+	if err == nil {
 		return errors.New("User already exists")
 	}
 

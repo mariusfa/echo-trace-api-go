@@ -1,10 +1,20 @@
 package rest
 
 import (
+	"echo/biz"
+
 	"github.com/gin-gonic/gin"
 )
 
-func SetupRouter(healthController *HealthController, userController *UserController) *gin.Engine {
+func SetupServicesControllers(userRepo biz.UserRepositoryContract) *gin.Engine {
+
+	userService := biz.UserService{UserRepository: userRepo}
+	userController := UserController{UserService: userService}
+	healthController := HealthController{}
+	return SetupRouter(healthController, userController)
+}
+
+func SetupRouter(healthController HealthController, userController UserController) *gin.Engine {
 	r := gin.Default()
 	r.GET("/health", healthController.HealthCheck)
 

@@ -150,6 +150,34 @@ func TestUserRepository_GetByName(t *testing.T) {
 	}
 }
 
+func TestUserRepository_GetByName_NotFound(t *testing.T) {
+	db, err := utils.SetupAppDb(userDbConfig)
+	if err != nil {
+		t.Fatalf("Failed to setup app db: %v", err)
+	}
+	repo := biz.NewUserRepository(db)
+
+	// Get the user by name
+	result, err := repo.GetByName("testuser")
+	if err == nil {
+		t.Errorf("Failed to not get user: %v", err)
+	}
+
+	if result != (domain.User{}) {
+		t.Errorf("Unexpected user: got %v, want %v", result, domain.User{})
+	}
+
+	err = clearUserTable(db)
+	if err != nil {
+		t.Fatalf("Failed to clear user table: %v", err)
+	}
+
+	err = db.Close()
+	if err != nil {
+		t.Fatalf("Failed to close db: %v", err)
+	}
+}
+
 func clearUserTable(db *sql.DB) error {
 	query := "DELETE FROM echotraceschema.user"
 	_, err := db.Exec(query)

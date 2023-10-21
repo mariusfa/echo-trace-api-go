@@ -13,10 +13,6 @@ func main() {
 		panic(err)
 	}
 
-	healthController := rest.HealthController{}
-
 	userRepository := &biz.UserRepositoryFake{}
-	userService := biz.UserService{UserRepository: userRepository}
-	userController := rest.UserController{UserService: userService}
-	rest.SetupRouter(&healthController, &userController).Run()
+	rest.SetupServicesControllers(userRepository).Run()
 }

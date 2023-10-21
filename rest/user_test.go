@@ -12,10 +12,7 @@ import (
 
 func TestRegister(t *testing.T) {
 	userRepoFake := &biz.UserRepositoryFake{}
-	userService := biz.UserService{UserRepository: userRepoFake}
-	userController := UserController{UserService: userService}
-	healthController := &HealthController{}
-	router := SetupRouter(healthController, &userController)
+	router := SetupServicesControllers(userRepoFake)
 
 	// Create a request to send to the above route
 	loginData := map[string]string{"username": "testuser", "password": "testpass"}
@@ -47,20 +44,17 @@ func TestRegister(t *testing.T) {
 	}
 }
 
-func TestRegisterConfictUsername(t *testing.T) {
+func TestRegisterConflictUsername(t *testing.T) {
 	user := domain.User{
 		Name:           "testuser",
 		HashedPassword: "testpass",
 	}
 	userRepoFake := &biz.UserRepositoryFake{}
 	userRepoFake.Users = append(userRepoFake.Users, user)
-	userService := biz.UserService{UserRepository: userRepoFake}
-	userController := UserController{UserService: userService}
-	healthController := &HealthController{}
-	router := SetupRouter(healthController, &userController)
+	router := SetupServicesControllers(userRepoFake)
 
 	// Create a request to send to the above route
-	loginData := map[string]string{"username": "testuser", "password": "testpass"}
+	loginData := map[string]string{"username": "testuser", "password": "testpass2"}
 	loginJSON, _ := json.Marshal(loginData)
 	request := httptest.NewRequest("POST", "/user/register", bytes.NewBuffer(loginJSON))
 	request.Header.Set("Content-Type", "application/json")
@@ -70,6 +64,12 @@ func TestRegisterConfictUsername(t *testing.T) {
 
 	// Perform the request
 	router.ServeHTTP(response, request)
+
+	// check length of users
+	if len(userRepoFake.Users) == 2 {
+		t.Errorf("Duplicate user inserted")
+	}
+
 
 	if response.Code != http.StatusConflict {
 		t.Errorf("Response code is %v", response.Code)

@@ -2,6 +2,7 @@ package biz
 
 import (
 	"echo/biz/domain"
+	"errors"
 )
 
 type UserRepositoryFake struct {
@@ -19,5 +20,5 @@ func (ur *UserRepositoryFake) GetByName(name string) (domain.User, error) {
 			return user, nil
 		}
 	}
-	return domain.User{}, nil
+	return domain.User{}, errors.New("User not found")
 }
