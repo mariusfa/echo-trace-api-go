@@ -1,9 +1,9 @@
 package main
 
 import (
+	"echo/biz"
 	"echo/rest"
 	"echo/utils"
-	"net/http"
 )
 
 func main() {
@@ -13,10 +13,6 @@ func main() {
 		panic(err)
 	}
 
-	healthController := rest.HealthController{}
-	server := rest.SetupHandlers(healthController)
-	http.ListenAndServe(":8080", server)
-
-	// userRepository := &biz.UserRepositoryFake{}
-	// rest.SetupServicesControllers(userRepository).Run()
+	userRepository := &biz.UserRepositoryFake{}
+	rest.SetupServicesControllers(userRepository).Run()
 }

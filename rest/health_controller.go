@@ -1,9 +1,11 @@
 package rest
 
-import "net/http"
+import (
+	"github.com/gin-gonic/gin"
+)
 
 type HealthController struct{}
 
-func (h *HealthController) HealthCheck(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("Hello World"))
+func (h *HealthController) HealthCheck(c *gin.Context) {
+	c.String(200, "Hello World")
 }
