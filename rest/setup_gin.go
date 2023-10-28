@@ -10,11 +10,11 @@ func SetupServicesControllers(userRepo biz.UserRepositoryContract) *gin.Engine {
 
 	userService := biz.UserService{UserRepository: userRepo}
 	userController := UserController{UserService: userService}
-	healthController := HealthController{}
+	healthController := HealthControllerGin{}
 	return SetupRouter(healthController, userController)
 }
 
-func SetupRouter(healthController HealthController, userController UserController) *gin.Engine {
+func SetupRouter(healthController HealthControllerGin, userController UserController) *gin.Engine {
 	r := gin.Default()
 	r.GET("/health", healthController.HealthCheck)
 

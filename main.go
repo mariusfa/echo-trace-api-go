@@ -1,16 +1,10 @@
 package main
 
 import (
-	// "echo/biz"
-	// "echo/rest"
+	"echo/rest"
 	"echo/utils"
 	"net/http"
 )
-
-// TODO: remove this
-// func hello(w http.ResponseWriter, r *http.Request) {
-// 	w.Write([]byte("Hello World"))
-// }
 
 func main() {
 	migrationDbConfig := utils.GetMigrationDbConfig()
@@ -19,10 +13,9 @@ func main() {
 		panic(err)
 	}
 
-	mux := http.NewServeMux()
-	// TODO: remove this
-	// mux.HandleFunc("/health", hello)
-	http.ListenAndServe(":8080", mux)
+	healthController := rest.HealthController{}
+	server := rest.SetupHandlers(healthController)
+	http.ListenAndServe(":8080", server)
 
 	// userRepository := &biz.UserRepositoryFake{}
 	// rest.SetupServicesControllers(userRepository).Run()

@@ -70,7 +70,6 @@ func TestRegisterConflictUsername(t *testing.T) {
 		t.Errorf("Duplicate user inserted")
 	}
 
-
 	if response.Code != http.StatusConflict {
 		t.Errorf("Response code is %v", response.Code)
 	}
