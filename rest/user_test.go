@@ -78,7 +78,7 @@ func TestRegisterConflictUsername(t *testing.T) {
 
 // TODO finish me
 func TestValidate(t *testing.T) {
-        user := domain.user{
+        user := domain.User{
                 Name: "testuser",
                 HashedPassword: "test password",
         }
