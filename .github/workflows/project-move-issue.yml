@@ -20,4 +20,4 @@ jobs:
         with:
           project: echo-trace-api-go
           column: In Progress
-          repo-token: ${{ secrets.GHPROJECT_TOKEN }}
+          repo-token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
