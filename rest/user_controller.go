@@ -49,3 +49,7 @@ func (uc *UserController) Login(c *gin.Context) {
 		return
 	}
 }
+
+func (uc *UserController) Validate(c *gin.Context) {
+	// TODO: Implement
+}
