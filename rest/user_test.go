@@ -75,3 +75,7 @@ func TestRegisterConflictUsername(t *testing.T) {
 		t.Errorf("Response code is %v", response.Code)
 	}
 }
+
+func Test validate(t *testing.T) {
+    // TODO implement
+}
