@@ -6,8 +6,8 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func SetupServices(userRepo biz.UserRepositoryContract) (biz.UserService) {
-    // TODO impl
+func SetupServices(userRepo biz.UserRepositoryContract) biz.UserService {
+	// TODO impl
 }
 
 func SetupServicesControllers(userRepo biz.UserRepositoryContract) *gin.Engine {

@@ -70,7 +70,6 @@ func TestRegisterConflictUsername(t *testing.T) {
 		t.Errorf("Duplicate user inserted")
 	}
 
-
 	if response.Code != http.StatusConflict {
 		t.Errorf("Response code is %v", response.Code)
 	}
@@ -78,10 +77,10 @@ func TestRegisterConflictUsername(t *testing.T) {
 
 // TODO finish me
 func TestValidate(t *testing.T) {
-        user := domain.User{
-                Name: "testuser",
-                HashedPassword: "test password",
-        }
-        userRepoFake := &biz.UserRepositoryFake{}
-        userRepoFake.Users = append(userRepoFake.Users, user)
+	user := domain.User{
+		Name:           "testuser",
+		HashedPassword: "test password",
+	}
+	userRepoFake := &biz.UserRepositoryFake{}
+	userRepoFake.Users = append(userRepoFake.Users, user)
 }
