@@ -76,6 +76,6 @@ func TestRegisterConflictUsername(t *testing.T) {
 	}
 }
 
-func Test validate(t *testing.T) {
+func TestValidate(t *testing.T) {
     // TODO implement
 }
