@@ -82,4 +82,6 @@ func TestValidate(t *testing.T) {
                 Name: "testuser",
                 HashedPassword: "test password",
         }
+        userRepoFake := &biz.UserRepositoryFake{}
+        userRepoFake.Users = append(userRepoFake.Users, user)
 }
