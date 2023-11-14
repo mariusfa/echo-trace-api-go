@@ -1,18 +1,21 @@
 package main
 
 import (
-	"echo/biz"
-	"echo/rest"
+	"echo/app"
 	"echo/utils"
 )
 
 func main() {
-	migrationDbConfig := utils.GetMigrationDbConfig()
-	err := utils.Migrate(migrationDbConfig, "./migrations")
+	err := utils.Migrate(utils.GetMigrationDbConfig(), "./migrations")
 	if err != nil {
 		panic(err)
 	}
 
-	userRepository := &biz.UserRepositoryFake{}
-	rest.SetupServicesControllers(userRepository).Run()
+	db, err := utils.SetupAppDb(utils.GetAppDbConfig())
+	if err != nil {
+		panic(err)
+	}
+
+	router := app.AppSetup(db)
+	router.Run()
 }

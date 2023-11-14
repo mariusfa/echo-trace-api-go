@@ -33,6 +33,23 @@ func GetMigrationDbConfig() DbConfig {
 	}
 }
 
+func GetAppDbConfig() DbConfig {
+	const (
+		defaultAppHost     = "localhost"
+		defaultAppPort     = 5432
+		defaultAppUser     = "appuser"
+		defaultAppPassword = "password"
+		defaultAppDBName   = "postgres"
+	)
+	return DbConfig{
+		Host:     GetEnv("DB_HOST", defaultAppHost),
+		Port:     GetEnvAsInt("DB_PORT", defaultAppPort),
+		User:     GetEnv("DB_USER", defaultAppUser),
+		Password: GetEnv("DB_PASSWORD", defaultAppPassword),
+		DbName:   GetEnv("DB_NAME", defaultAppDBName),
+	}
+}
+
 func GetTestContainerMigrationDbConfig(container testcontainers.Container, ctx context.Context) (DbConfig, error) {
 	host, err := container.Host(ctx)
 	if err != nil {

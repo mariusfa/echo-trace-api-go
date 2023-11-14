@@ -1,4 +1,4 @@
-package rest
+package user
 
 import (
 	"echo/biz"
@@ -10,6 +10,12 @@ import (
 
 type UserController struct {
 	UserService biz.UserService
+}
+
+func NewUserController(userService biz.UserService) UserController {
+	return UserController{
+		UserService: userService,
+	}
 }
 
 func (uc *UserController) Register(c *gin.Context) {

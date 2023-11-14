@@ -22,3 +22,9 @@ func (ur *UserRepositoryFake) GetByName(name string) (domain.User, error) {
 	}
 	return domain.User{}, errors.New("User not found")
 }
+
+func NewUserRepositoryFake() *UserRepositoryFake {
+	return &UserRepositoryFake{
+		Users: []domain.User{},
+	}
+}

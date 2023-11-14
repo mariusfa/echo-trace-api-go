@@ -1,15 +1,14 @@
-package rest
+package tests
 
 import (
-	"echo/biz"
+	"echo/app"
 	"net/http"
 	"net/http/httptest"
 	"testing"
 )
 
 func TestHealth(t *testing.T) {
-	userRepoFake := &biz.UserRepositoryFake{}
-	router := SetupServicesControllers(userRepoFake)
+	router, _ := app.AppTestSetup()
 
 	// Create a request to send to the above route
 	request := httptest.NewRequest("GET", "/health", nil)

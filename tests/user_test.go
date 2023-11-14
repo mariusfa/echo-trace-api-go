@@ -1,7 +1,8 @@
-package rest
+package tests
 
 import (
 	"bytes"
+	"echo/app"
 	"echo/biz"
 	"echo/biz/domain"
 	"encoding/json"
@@ -11,8 +12,8 @@ import (
 )
 
 func TestRegister(t *testing.T) {
-	userRepoFake := &biz.UserRepositoryFake{}
-	router := SetupServicesControllers(userRepoFake)
+	router, repos := app.AppTestSetup()
+	userRepoFake := repos.UserRepository.(*biz.UserRepositoryFake)
 
 	// Create a request to send to the above route
 	loginData := map[string]string{"username": "testuser", "password": "testpass"}
@@ -49,9 +50,9 @@ func TestRegisterConflictUsername(t *testing.T) {
 		Name:           "testuser",
 		HashedPassword: "testpass",
 	}
-	userRepoFake := &biz.UserRepositoryFake{}
+	router, repos := app.AppTestSetup()
+	userRepoFake := repos.UserRepository.(*biz.UserRepositoryFake)
 	userRepoFake.Users = append(userRepoFake.Users, user)
-	router := SetupServicesControllers(userRepoFake)
 
 	// Create a request to send to the above route
 	loginData := map[string]string{"username": "testuser", "password": "testpass2"}

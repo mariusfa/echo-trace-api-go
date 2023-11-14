@@ -12,6 +12,12 @@ type UserService struct {
 	UserRepository UserRepositoryContract
 }
 
+func NewUserService(userRepository UserRepositoryContract) UserService {
+	return UserService{
+		UserRepository: userRepository,
+	}
+}
+
 func (us *UserService) Register(userRequest domain.UserRequest) error {
 	_, err := us.UserRepository.GetByName(userRequest.Username)
 	if err == nil {
